@@ -1,0 +1,29 @@
+import parse, unittest
+
+class TestParse(unittest.TestCase):
+	def test_nominal(self):
+		actual = parse.parse(['(', 'one', 'two', ')'])
+		expected = [['(', 'one', 'two', ')']]
+		self.assertEqual(actual, expected)
+
+	def test_expr(self):
+		actual = parse.parse(['(', '+', 1, 1, ')'])
+		expected = [['(', '+', 1, 1, ')']]
+		self.assertEqual(actual, expected)
+
+	def test_nest_expr(self):
+		actual = parse.parse(['(', '+', 1, '(', '+', 1, 1, ')', ')'])
+		expected = [['(', '+', 1, ['(', '+', 1, 1, ')'], ')']]
+		self.assertEqual(actual, expected)
+
+class TestTokenize(unittest.TestCase):
+	def test_nominal(self):
+		tokens = []
+		for token in parse.tokenize('one two'):
+			tokens.append(token)
+			
+		actual1 = tokens[0] 
+		actual2 = tokens[1] 
+
+		self.assertEqual(actual1, 'one')
+		self.assertEqual(actual2, 'two')
