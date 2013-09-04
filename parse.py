@@ -32,20 +32,22 @@ def parse(tokens):
 	return stack 
 
 def eval(tree):
-	print 'eval'
-	print tree
 	if type(tree) == list:
 		if tree[1] == '+':
-			print 'adding'
 			sum = 0
 			for arg in tree[2:len(tree)-1]:
 				sum += eval(arg)	
 			return sum
 
-	elif type(tree) == int:
-		return tree
+	elif type(tree) == int or tree.isdigit():
+		return int(tree)
 
 def tokenize(text):
 	for token in text.split(' '):
 		yield token
+
+if __name__ == '__main__':
+	while True:
+		s = raw_input('(): ')
+		print eval(parse(tokenize(s))[0])
 
