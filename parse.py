@@ -38,6 +38,12 @@ def eval(tree):
 			for arg in tree[2:len(tree)-1]:
 				sum += eval(arg)	
 			return sum
+			
+		elif tree[1] == '*':
+			prod = 1
+			for arg in tree[2:len(tree)-1]:
+				prod *= eval(arg)	
+			return prod 
 
 	elif type(tree) == int or tree.isdigit():
 		return int(tree)
