@@ -1,6 +1,6 @@
 # for convenience we can import some packages
 # that become available to the repl
-import json
+import json, re
 
 def last_item(stack):
 	if stack:
@@ -49,7 +49,7 @@ def _eval(tree):
 				prod *= _eval(arg)	
 			return prod 
 		else:
-			#TODO: statements as well as expressions here 
+			#TODO: statements as well as statements
 			return eval( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
 			#exec( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
 
@@ -61,7 +61,8 @@ def _eval(tree):
 		return tree
 
 def tokenize(text):
-	for token in text.split(' '):
+	#for token in text.split(' '):
+	for token in re.findall( r"\(|\)|[\w\.]+|\+|\*", text ):
 		yield token
 
 if __name__ == '__main__':

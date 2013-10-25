@@ -56,6 +56,13 @@ class TestParse(unittest.TestCase):
 		expected = [1,2] 
 		self.assertEqual(actual, expected)
 
+	def test_mul_expr_eval(self):
+		actual = parse._eval(parse.parse(parse.tokenize(
+			'(+ 1(+ 2 2) (* 3 3 ) )'
+		)))
+		expected = 14 
+		self.assertEqual(actual, expected)
+
 
 class TestTokenize(unittest.TestCase):
 	def test_nominal(self):
