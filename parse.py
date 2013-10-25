@@ -33,7 +33,7 @@ def parse(tokens):
 		else:
 			last_item(stack).append(token)
 
-	return stack 
+	return stack[0]
 
 def _eval(tree):
 	if type(tree) == list:
@@ -61,8 +61,7 @@ def _eval(tree):
 			return eval( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
 			#exec( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
 
-	#elif type(tree) == int or tree.isdigit():
-	elif type(tree) == int:
+	elif type(tree) == int or (hasattr(tree, 'isdigit') and tree.isdigit()):
 		return int(tree)
 	
 	else:
