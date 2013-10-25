@@ -49,15 +49,7 @@ def _eval(tree):
 				prod *= _eval(arg)	
 			return prod 
 		else:
-			print 'evaluating'
-			"""
-			prod = eval(
-				compile(
-					tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')',
-					'', 
-					'exec'))
-			"""
-			print tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')'
+			#TODO: statements as well as expressions here 
 			return eval( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
 			#exec( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
 
