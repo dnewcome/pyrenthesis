@@ -27,8 +27,13 @@ class TestParse(unittest.TestCase):
 		self.assertEqual(actual, expected)
 
 	def test_eval_nest3_expr(self):
-		actual = parse.eval(parse.parse(['(', '+', 1, '(', '+', 2, 2, ')', '(', '+', 3, 3, ')', ')'])[0])
+		actual = parse._eval(parse.parse(['(', '+', 1, '(', '+', 2, 2, ')', '(', '+', 3, 3, ')', ')'])[0])
 		expected = 11
+		self.assertEqual(actual, expected)
+
+	def test_eval_json_expr(self):
+		actual = parse._eval(parse.parse(['(', 'json.loads', '"[1,2]"', ')'])[0])
+		expected = [1,2] 
 		self.assertEqual(actual, expected)
 
 

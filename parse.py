@@ -1,3 +1,7 @@
+# for convenience we can import some packages
+# that become available to the repl
+import json
+
 def last_item(stack):
 	if stack:
 		return stack[len(stack)-1]
@@ -31,22 +35,39 @@ def parse(tokens):
 
 	return stack 
 
-def eval(tree):
+def _eval(tree):
 	if type(tree) == list:
 		if tree[1] == '+':
 			sum = 0
 			for arg in tree[2:len(tree)-1]:
-				sum += eval(arg)	
+				sum += _eval(arg)	
 			return sum
 			
 		elif tree[1] == '*':
 			prod = 1
 			for arg in tree[2:len(tree)-1]:
-				prod *= eval(arg)	
+				prod *= _eval(arg)	
 			return prod 
+		else:
+			print 'evaluating'
+			"""
+			prod = eval(
+				compile(
+					tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')',
+					'', 
+					'exec'))
+			"""
+			print tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')'
+			return eval( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
+			#exec( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
 
-	elif type(tree) == int or tree.isdigit():
+	#elif type(tree) == int or tree.isdigit():
+	elif type(tree) == int:
 		return int(tree)
+	
+	else:
+		print 'type is ' + str(type(tree))
+		return tree
 
 def tokenize(text):
 	for token in text.split(' '):
@@ -54,6 +75,6 @@ def tokenize(text):
 
 if __name__ == '__main__':
 	while True:
-		s = raw_input('(): ')
-		print eval(parse(tokenize(s))[0])
+		s = raw_input('(repl): ')
+		print _eval(parse(tokenize(s))[0])
 
