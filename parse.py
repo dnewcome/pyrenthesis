@@ -2,6 +2,9 @@
 # that become available to the repl
 import json, re
 
+# toplevel variable namespace
+names = {} 
+
 def last_item(stack):
 	if stack:
 		return stack[len(stack)-1]
@@ -48,6 +51,10 @@ def _eval(tree):
 			for arg in tree[2:len(tree)-1]:
 				prod *= _eval(arg)	
 			return prod 
+
+		elif tree[1] == 'def':
+			names[tree[2]] == tree[3]
+
 		else:
 			#TODO: statements as well as statements
 			return eval( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
