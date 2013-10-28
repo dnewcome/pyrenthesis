@@ -53,12 +53,21 @@ def _eval(tree):
 			return prod 
 
 		elif tree[1] == 'def':
-			names[tree[2]] == tree[3]
+			names[tree[2]] = tree[3]
+
+		elif tree[1] == 'names':
+			print names
+
+		## use eval to execute python _expression_
+		elif tree[1] == 'eval':
+			return eval( tree[2] + '(' + ','.join(tree[3:len(tree)-1]) + ')' )
+
+		## use eval to execute python _statement_ 
+		elif tree[1] == 'exec':
+			exec( tree[2] + '(' + ','.join(tree[3:len(tree)-1]) + ')' )
 
 		else:
-			#TODO: statements as well as statements
-			return eval( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
-			#exec( tree[1] + '(' + ','.join(tree[2:len(tree)-1]) + ')' )
+			return _eval(names[tree[1]])
 
 	elif type(tree) == int or (hasattr(tree, 'isdigit') and tree.isdigit()):
 		return int(tree)
@@ -75,5 +84,5 @@ def tokenize(text):
 if __name__ == '__main__':
 	while True:
 		s = raw_input('(repl): ')
-		print _eval(parse(tokenize(s))[0])
+		print _eval(parse(tokenize(s)))
 

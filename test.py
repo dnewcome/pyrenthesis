@@ -52,8 +52,13 @@ class TestParse(unittest.TestCase):
 		self.assertEqual(actual, expected)
 
 	def test_eval_json_expr(self):
-		actual = parse._eval(parse.parse(['(', 'json.loads', '"[1,2]"', ')']))
+		actual = parse._eval(parse.parse(['(', 'eval', 'json.loads', '"[1,2]"', ')']))
 		expected = [1,2] 
+		self.assertEqual(actual, expected)
+
+	def test_eval_python_statement(self):
+		actual = parse._eval(parse.parse(['(', 'exec', 'print', '"blah"', ')']))
+		expected = None
 		self.assertEqual(actual, expected)
 
 	def test_mul_expr_eval(self):
@@ -61,6 +66,12 @@ class TestParse(unittest.TestCase):
 			'(+ 1(+ 2 2) (* 3 3 ) )'
 		)))
 		expected = 14 
+		self.assertEqual(actual, expected)
+
+	def test_def(self):
+		parse._eval(parse.parse(parse.tokenize('(def foo "bar")')))
+		actual = parse._eval(parse.parse(parse.tokenize('(foo)')))
+		expected = 'bar'
 		self.assertEqual(actual, expected)
 
 
