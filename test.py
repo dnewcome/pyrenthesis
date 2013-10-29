@@ -6,6 +6,18 @@ class TestParse(unittest.TestCase):
 		expected = ['(', 'one', 'two', ')']
 		self.assertEqual(actual, expected)
 
+	def test_nominal_tokenizer(self):
+		actual = parse.parse(parse.tokenize("(one 'two)"))
+		expected = ['(', 'one', "'", 'two', ')']
+		self.assertEqual(actual, expected)
+
+	# todo: support quoting without toplevel expression
+	# todo: write 'print' function to output s-expression instead of AST 
+	def test_nominal_tokenizer2(self):
+		actual = parse.parse(parse.tokenize("('(one two))"))
+		expected = ['(', "'", ['(', 'one', 'two', ')'], ')']
+		self.assertEqual(actual, expected)
+
 	def test_expr(self):
 		actual = parse.parse(['(', '+', 1, 1, ')'])
 		expected = ['(', '+', 1, 1, ')']

@@ -58,6 +58,10 @@ def _eval(tree):
 		elif tree[1] == 'names':
 			print names
 
+		elif tree[1] == "'":
+			# don't evaluate quoted expressions
+			return tree[2];
+
 		## use eval to execute python _expression_
 		elif tree[1] == 'eval':
 			return eval( tree[2] + '(' + ','.join(tree[3:len(tree)-1]) + ')' )
@@ -78,7 +82,7 @@ def _eval(tree):
 
 def tokenize(text):
 	#for token in text.split(' '):
-	for token in re.findall( r"\(|\)|[\w\.]+|\+|\*", text ):
+	for token in re.findall( r"\(|\)|[\w\.]+|\+|\*|'", text ):
 		yield token
 
 if __name__ == '__main__':
