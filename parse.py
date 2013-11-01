@@ -3,6 +3,7 @@
 import json, re
 
 # toplevel variable namespace
+# todo: need concept of scope/envoronment
 names = {} 
 
 def last_item(stack):
@@ -43,7 +44,7 @@ def _eval(tree):
 		if tree[1] == '+':
 			sum = 0
 			for arg in tree[2:len(tree)-1]:
-				sum += _eval(arg)	
+				sum += _eval(arg)
 			return sum
 			
 		elif tree[1] == '*':
@@ -70,15 +71,30 @@ def _eval(tree):
 		elif tree[1] == 'exec':
 			exec( tree[2] + '(' + ','.join(tree[3:len(tree)-1]) + ')' )
 
+		## use eval to lisp function 
+		elif tree[1] == 'call':
+			expr = names[tree[2]]
+			args = expr[1]
+			body = expr[2]
+			for i in range(1, len(args)-1):
+				print('adding arg name:{0}', args[i])
+				print('adding arg val:{0}', tree[2+i])
+				names[args[i]] = tree[2+i]
+
+			return _eval(body)
+
 		else:
+			print('looking up {0}',tree[1])
 			return _eval(names[tree[1]])
 
 	elif type(tree) == int or (hasattr(tree, 'isdigit') and tree.isdigit()):
 		return int(tree)
 	
 	else:
-		print 'type is ' + str(type(tree))
-		return tree
+		if tree in names:
+			return _eval(names[tree])
+		else:
+			return tree
 
 def tokenize(text):
 	#for token in text.split(' '):

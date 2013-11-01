@@ -86,6 +86,12 @@ class TestParse(unittest.TestCase):
 		expected = 'bar'
 		self.assertEqual(actual, expected)
 
+	def test_def_func(self):
+		parse._eval(parse.parse(parse.tokenize('(def foo ((x) (+ x 1)))')))
+		actual = parse._eval(parse.parse(parse.tokenize('(call foo 2)')))
+		expected = 3 
+		self.assertEqual(actual, expected)
+
 
 class TestTokenize(unittest.TestCase):
 	def test_nominal(self):
